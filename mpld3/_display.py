@@ -135,6 +135,13 @@ class NumpyEncoder(json.JSONEncoder):
         elif isinstance(obj, (numpy.float_, numpy.float16, numpy.float32, 
             numpy.float64)):
             return float(obj)
+        try: # Added by ceprio 2018-04-25
+            iterable = iter(obj)
+        except TypeError:
+            pass
+        else:
+            return list(iterable)
+         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
 
 
